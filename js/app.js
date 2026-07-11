@@ -46,9 +46,13 @@
 
   app.controller('DetectorController', function() {
     this.click = function() {
-      lab.clickDetector();
-      detector.addEvent();
-      UI.showUpdateValue("#update-data", lab.state.detector);
+      // Combo lives in the juice layer (juice.js); guard so the game works
+      // even if that layer is absent.
+      var combo = window.PCJuice && window.PCJuice.combo;
+      var mult = combo ? combo.bump() : 1;
+      var gain = lab.clickDetector(mult);
+      detector.addEvent(combo ? combo.heat() : 0);
+      UI.showUpdateValue("#update-data", gain);
       return false;
     };
   });
@@ -80,6 +84,9 @@
           return w.state.hired;
         }).reduce(function(a, b){return a + b}, 0));
       }
+      document.dispatchEvent(new CustomEvent('pc:tick', {
+        detail: { grant: grant, sum: sum }
+      }));
     }, 1000);
   }]);
 
@@ -91,11 +98,17 @@
     this.isAvailable = function(item) {
       return item.isAvailable(lab);
     };
-    this.doResearch = function(item) {
+    this.doResearch = function(item, $event) {
       var cost = item.research(lab);
       if (cost > 0) {
         UI.showUpdateValue("#update-data", -cost);
         UI.showUpdateValue("#update-reputation", item.state.reputation);
+        document.dispatchEvent(new CustomEvent('pc:purchase', { detail: {
+          kind: 'research',
+          btn: $event && $event.currentTarget,
+          cost: cost,
+          res: 'data'
+        }}));
       }
     };
     this.showInfo = function(r) {
@@ -112,10 +125,16 @@
     this.isAvailable = function(worker) {
       return worker.isAvailable(lab);
     };
-    this.hire = function(worker) {
+    this.hire = function(worker, $event) {
       var cost = worker.hire(lab);
       if (cost > 0) {
         UI.showUpdateValue("#update-funding", -cost);
+        document.dispatchEvent(new CustomEvent('pc:purchase', { detail: {
+          kind: 'hire',
+          btn: $event && $event.currentTarget,
+          cost: cost,
+          res: 'money'
+        }}));
       }
     };
   });
@@ -128,9 +147,15 @@
     this.isAvailable = function(upgrade) {
       return upgrade.isAvailable(lab, allObjects);
     };
-    this.upgrade = function(upgrade) {
+    this.upgrade = function(upgrade, $event) {
       if (upgrade.buy(lab, allObjects)) {
         UI.showUpdateValue("#update-funding", upgrade.cost);
+        document.dispatchEvent(new CustomEvent('pc:purchase', { detail: {
+          kind: 'upgrade',
+          btn: $event && $event.currentTarget,
+          cost: upgrade.cost,
+          res: 'money'
+        }}));
       }
     }
   });

@@ -533,8 +533,164 @@ hr { border-color: var(--glass-b); }
 #hrContent .afford-btn[disabled]::before       { background: linear-gradient(90deg, var(--hr1),   var(--hr2)); }
 #upgradesContent .afford-btn[disabled]::before  { background: linear-gradient(90deg, var(--up1),   var(--up2)); }
 
+/* =====================================================================
+   Juice 2 — combo meter, click FX variants, purchase & milestone FX
+   ===================================================================== */
+
+/* combo meter under the detector: hidden while idle, glass track + scaleX bar */
+#combo-meter {
+  display: flex; align-items: center; gap: 10px;
+  max-width: 260px; margin: 10px auto 0;
+  opacity: 0; transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+#combo-meter.live { opacity: 1; }
+#combo-track {
+  flex: 1; height: 5px; border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+#combo-bar {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--data1), var(--fund1));
+  transform: scaleX(var(--heat, 0));
+  transform-origin: left;
+}
+#combo-mult {
+  font-size: 12px; font-weight: 800; letter-spacing: -0.3px;
+  color: var(--data1); min-width: 34px; text-align: left;
+}
+#combo-meter.overdrive #combo-bar {
+  animation: comboPulse 0.6s ease-in-out infinite alternate;
+  box-shadow: 0 0 12px rgba(255,196,0,0.6);
+}
+#combo-meter.overdrive #combo-mult { color: var(--fund1); }
+@keyframes comboPulse { from { filter: brightness(1); } to { filter: brightness(1.6); } }
+
+/* detector "kick" on click */
+#detector.det-kick { animation: detKick 0.18s var(--ease); }
+@keyframes detKick {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.975); }
+  100% { transform: scale(1); }
+}
+
+/* hot ripple (high combo): thicker + bigger */
+.det-ripple.hot {
+  border-width: 3px;
+  animation-name: rippleHot;
+}
+@keyframes rippleHot {
+  0%   { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(8);   opacity: 0; }
+}
+/* critical click: golden ring + golden float with a wobble */
+.det-ripple.crit {
+  border-color: rgba(255,196,0,0.95);
+  box-shadow: 0 0 24px rgba(255,196,0,0.7);
+  animation-name: rippleCrit;
+}
+@keyframes rippleCrit {
+  0%   { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(9);   opacity: 0; }
+}
+.click-float.crit {
+  color: var(--fund1);
+  text-shadow: 0 0 14px rgba(255,196,0,0.8), 0 2px 6px rgba(0,0,0,0.5);
+  animation-name: critFloat;
+}
+@keyframes critFloat {
+  0%   { opacity: 0; transform: translate(-50%, -50%)  scale(0.7) rotate(-6deg); }
+  15%  { opacity: 1; transform: translate(-50%, -85%)  scale(1.25) rotate(4deg); }
+  100% { opacity: 0; transform: translate(-50%, -280%) scale(1.05) rotate(-2deg); }
+}
+
+/* overdrive screen-edge vignette (div injected by juice.js) */
+#overdrive-vignette {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9997;
+  box-shadow: inset 0 0 120px rgba(255,196,0,0.28);
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+#overdrive-vignette.on { opacity: 1; }
+
+/* buy-button press feel + success pop */
+.btn:active:not([disabled]) { transform: translateY(0) scale(0.96); transition-duration: 0.05s; }
+.btn.buy-pop { animation: buyPop 0.3s var(--ease); }
+@keyframes buyPop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.94); }
+  65%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* card flash when a purchase succeeds inside it */
+.media.card-flash { animation: cardFlash 0.35s var(--ease); }
+@keyframes cardFlash {
+  0%   { background: rgba(255,255,255,0.04); border-color: var(--glass-b); }
+  30%  { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.4); }
+  100% { background: rgba(255,255,255,0.04); border-color: var(--glass-b); }
+}
+
+/* stat tile pop + flash when resources arrive; drip pulse on idle income */
+.status .stat-data { --flash: rgba(79,212,255,0.5); }
+.status .stat-rep  { --flash: rgba(199,125,255,0.5); }
+.status .stat-fund { --flash: rgba(255,196,0,0.5); }
+.status > .tile-pop { animation: tilePop 0.28s var(--ease); }
+@keyframes tilePop {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 rgba(0,0,0,0); }
+  35%  { transform: scale(1.06); box-shadow: 0 0 24px var(--flash, rgba(255,255,255,0.4)); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+.status > .tile-drip { animation: tileDrip 0.6s ease-out; }
+@keyframes tileDrip {
+  0%   { box-shadow: 0 0 0 rgba(0,0,0,0); }
+  30%  { box-shadow: 0 0 14px var(--flash, rgba(255,255,255,0.25)); filter: brightness(1.1); }
+  100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
+/* flying resource dots + confetti (created/animated by juice.js via WAAPI) */
+.fx-dot {
+  position: fixed; z-index: 70;
+  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--dotc, var(--data1)) 0%, transparent 75%);
+  box-shadow: 0 0 8px var(--dotc, var(--data1));
+}
+.fx-confetti {
+  position: fixed; z-index: 70;
+  width: 7px; height: 11px;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* achievement toast entrance pop */
+.alert.toast-pop { animation: toastPop 0.4s var(--ease); }
+@keyframes toastPop {
+  0%   { opacity: 0; transform: scale(0.85) translateY(-8px); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* tiny screen shake for big moments (upgrades, achievements) */
+#main-content.shake { animation: microShake 0.22s linear; }
+@keyframes microShake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(2px, -1px); }
+  50%  { transform: translate(-2px, 1px); }
+  75%  { transform: translate(1px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .det-ripple, .click-float { animation: none !important; }
+  #detector.det-kick, .btn.buy-pop, .media.card-flash,
+  #main-content.shake, .alert.toast-pop,
+  #combo-meter.overdrive #combo-bar { animation: none !important; }
+  .status > .tile-pop, .status > .tile-drip { animation: none !important; filter: brightness(1.15); }
+  .fx-dot, .fx-confetti { display: none !important; }
+  .btn:active:not([disabled]) { transform: none; }
 }
 
 /* =====================================================================

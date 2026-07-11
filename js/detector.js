@@ -263,9 +263,10 @@ var detector =
         ctx.stroke();
     },
 
-    addEvent: function()
+    addEvent: function(boost)   // boost: combo heat 0..1, scales track count
     {
-        var num = Math.max(3, Math.ceil(15 * Math.random()));
+        var num = Math.max(3, Math.ceil((15 + (boost || 0) * 15) * Math.random()));
+        num = Math.min(num, 30);
 
         for (var i = 0; i < num; i++) {
             var index = Math.round(Math.random() * (detector.tracks.length - 1));

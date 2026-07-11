@@ -54,9 +54,11 @@ var GameObjects = (function() {
     this.state.dataCollected += amount;
   };
 
-  Lab.prototype.clickDetector = function() {
+  Lab.prototype.clickDetector = function(mult) {
     this.state.clicks += 1;
-    this.acquireData(this.state.detector);
+    var gain = Math.round(this.state.detector * (mult || 1));
+    this.acquireData(gain);
+    return gain;
   };
 
   Lab.prototype.research = function(cost, reputation) {

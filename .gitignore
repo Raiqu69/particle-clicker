@@ -4,3 +4,6 @@
 # Electron
 node_modules/
 dist/
+
+# local dev config
+.claude/

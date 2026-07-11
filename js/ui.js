@@ -112,6 +112,7 @@ var UI = (function () {
     alert = $(alert);
 
     $('#achievements-container').prepend(alert);
+    document.dispatchEvent(new CustomEvent('pc:achievement', { detail: obj }));
     var remove = function(a)
     {
       return function()
