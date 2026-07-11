@@ -1,0 +1,41 @@
+{
+  "name": "particle-clicker",
+  "productName": "Particle Clicker",
+  "version": "1.0.0",
+  "description": "CERN Particle Clicker — offline desktop build",
+  "main": "main.js",
+  "author": "Raiqu",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "ch.cern.particle-clicker",
+    "productName": "Particle Clicker",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "css/**/*",
+      "js/**/*",
+      "json/**/*",
+      "html/**/*",
+      "fonts/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/mobile/original.png"
+    },
+    "portable": {
+      "artifactName": "ParticleClicker.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^43.1.0",
+    "electron-builder": "^26.15.3"
+  }
+}
