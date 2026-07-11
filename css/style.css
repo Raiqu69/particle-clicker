@@ -406,6 +406,74 @@ hr { border-color: var(--glass-b); }
 .alert .close { font-size: 20px; }
 
 /* =====================================================================
+   Juice — detector click feedback + count-up + affordability bars
+   ===================================================================== */
+.det-bounce { animation: detBounce 0.22s var(--ease); }
+@keyframes detBounce {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.955); }
+  100% { transform: scale(1); }
+}
+
+.det-ripple {
+  position: absolute;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 2px solid rgba(79, 212, 255, 0.9);
+  box-shadow: 0 0 18px rgba(79, 212, 255, 0.6);
+  pointer-events: none; z-index: 5;
+  animation: ripple 0.6s var(--ease) forwards;
+}
+@keyframes ripple {
+  0%   { transform: scale(0.4); opacity: 0.9; }
+  100% { transform: scale(6);   opacity: 0; }
+}
+
+.click-float {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none; z-index: 6;
+  font-weight: 800; font-size: 18px; letter-spacing: -0.5px;
+  color: #4fd4ff; white-space: nowrap;
+  text-shadow: 0 0 12px rgba(79,212,255,0.7), 0 2px 6px rgba(0,0,0,0.5);
+  animation: clickFloat 0.75s var(--ease) forwards;
+}
+@keyframes clickFloat {
+  0%   { opacity: 0; transform: translate(-50%, -50%)  scale(0.7); }
+  15%  { opacity: 1; transform: translate(-50%, -80%)  scale(1.1); }
+  100% { opacity: 0; transform: translate(-50%, -260%) scale(1); }
+}
+
+.stat-value.is-counting { filter: brightness(1.18); }
+
+/* affordability fill: greyed disabled buy buttons fill up as you approach cost */
+.afford-btn { position: relative; overflow: hidden; }
+.afford-btn > * { position: relative; z-index: 1; }
+#researchContent .afford-btn[disabled],
+#hrContent .afford-btn[disabled],
+#upgradesContent .afford-btn[disabled] {
+  opacity: 1;
+  color: var(--dim);
+  background: rgba(255,255,255,0.05);
+  border-color: var(--glass-b);
+  box-shadow: none;
+}
+.afford-btn[disabled]::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: calc(var(--p, 0) * 100%);
+  z-index: 0; opacity: 0.45;
+}
+#researchContent .afford-btn[disabled]::before { background: linear-gradient(90deg, var(--data1), var(--data2)); }
+#hrContent .afford-btn[disabled]::before       { background: linear-gradient(90deg, var(--hr1),   var(--hr2)); }
+#upgradesContent .afford-btn[disabled]::before  { background: linear-gradient(90deg, var(--up1),   var(--up2)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .det-bounce, .det-ripple, .click-float { animation: none !important; }
+}
+
+/* =====================================================================
    Scrollbars
    ===================================================================== */
 .scrollable::-webkit-scrollbar, body::-webkit-scrollbar { width: 8px; height: 8px; }

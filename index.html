@@ -48,14 +48,14 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="#" data-toggle="modal" data-target="#achievements-modal"><i class="fa fa-trophy"></i> Achievements</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#stats-modal"><i class="fa fa-bar-chart"></i> Statistics</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#achievements-modal"><i class="fa fa-trophy"></i> Erfolge</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#stats-modal"><i class="fa fa-bar-chart"></i> Statistik</a></li>
             <li class="dropdown" ng-controller="SaveController">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-floppy-o"></i> Saved: <span ng-cloak>{{ lastSaved | date : 'H:mm' }}</span> <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-floppy-o"></i> Gespeichert: <span ng-cloak>{{ lastSaved | date : 'H:mm' }}</span> <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#" ng-click="saveNow()"><i class="fa fa-save"></i> Save now</a></li>
+                <li><a href="#" ng-click="saveNow()"><i class="fa fa-save"></i> Jetzt speichern</a></li>
                 <li class="divider"></li>
-                <li><a href="#" ng-click="restart()"><i class="fa fa-refresh"></i> Restart</a></li>
+                <li><a href="#" ng-click="restart()"><i class="fa fa-refresh"></i> Neu starten</a></li>
               </ul>
             </li>
             <!--<li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-users"></i> About</a></li>-->
@@ -80,7 +80,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <i class="fa fa-cogs"></i> Research
+              <i class="fa fa-cogs"></i> Forschung
             </h4>
           </div>
           <div class="panel-body scrollable large" id="researchLarge" ng-controller="ResearchController as rc">
@@ -92,9 +92,9 @@
                   <div class="media-body">
                     <h4 class="media-heading">{{ r.state.level > 0 ? r.name : '?????' }} <span ng-show="r.state.level > 0" class="badge">Level {{ r.state.level }}</span></h4>
                     <p ng-show="r.state.level > 0">{{ r.description }}</p>
-                    <p ng-show="r.state.level > 0" class="small">Research yields <strong>{{ r.state.reputation | niceNumber }}</strong> reputation.</p>
+                    <p ng-show="r.state.level > 0" class="small">Bringt <strong>{{ r.state.reputation | niceNumber }}</strong> Reputation.</p>
                     <div class="btn-group">
-                      <button class="btn btn-primary" ng-disabled="!rc.isAvailable(r)" ng-click="rc.doResearch(r)"><i class="fa fa-cogs"></i> <small>{{ r.state.cost | niceNumber }} data</small></button>
+                      <button class="btn btn-primary afford-btn" data-res="data" data-cost="{{ r.state.cost }}" ng-disabled="!rc.isAvailable(r)" ng-click="rc.doResearch(r)"><i class="fa fa-cogs"></i> <small>{{ r.state.cost | niceNumber }} Daten</small></button>
                     <button class="btn btn-info {{ r.state.interesting ? 'blink' : '' }}" ng-show="r.state.level > 0" ng-click="rc.showInfo(r)"><i class="fa {{ r.state.interesting ? 'fa-exclamation' : 'fa-info' }}"></i></button>
                   </div>
                   </div>
@@ -121,18 +121,18 @@
         <button id="detector-info" class="btn btn-info" ng-click="lc.showDetectorInfo()"><i class="fa fa-info"></i></button>
         <div class="row status" ng-cloak>
           <div class="col-xs-4 text-center col-no-padding-xs stat-data">
-            <span class="stat-label">Data</span>
-            <span class="stat-value">{{ lc.lab.state.data | niceNumber }}</span>
+            <span class="stat-label">Daten</span>
+            <span class="stat-value" id="val-data"></span>
             <div class="update-value" id="update-data"></div>
           </div>
           <div class="col-xs-4 text-center col-no-padding-xs stat-rep">
             <span class="stat-label">Reputation</span>
-            <span class="stat-value">{{ lc.lab.state.reputation | niceNumber }}</span>
+            <span class="stat-value" id="val-reputation"></span>
             <div class="update-value" id="update-reputation"></div>
           </div>
           <div class="col-xs-4 text-center col-no-padding-xs stat-fund">
-            <span class="stat-label">Funding</span>
-            <span class="stat-value">{{ lc.lab.state.money | currency }}</span>
+            <span class="stat-label">Fördergelder</span>
+            <span class="stat-value" id="val-funding"></span>
             <div class="update-value" id="update-funding"></div>
           </div>
         </div>
@@ -142,7 +142,7 @@
         <div class="panel panel-default panel-stick">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <i class="fa fa-users"></i> HR
+              <i class="fa fa-users"></i> Personal
             </h4>
           </div>
           <div class="panel-body scrollable large" id="hrLarge">
@@ -152,8 +152,8 @@
                   <div class="media-body">
                     <h4 class="media-heading">{{ w.name }} <span ng-show="w.state.hired > 0" class="badge">{{ w.state.hired | niceNumber }}</span></h4>
                     <p ng-show="w.state.hired > 0">{{ w.description }}</p>
-                    <p ng-show="w.state.hired > 0" class="small">Produce <strong>{{ w.state.rate | niceNumber }}</strong> data per second.</p>
-                    <button class="btn btn-primary" ng-disabled="!hrc.isAvailable(w)" ng-click="hrc.hire(w)"><i class="fa fa-user"></i> <small>{{ w.state.cost | currency }}</small></button>
+                    <p ng-show="w.state.hired > 0" class="small">Erzeugt <strong>{{ w.state.rate | niceNumber }}</strong> Daten pro Sekunde.</p>
+                    <button class="btn btn-primary afford-btn" data-res="money" data-cost="{{ w.state.cost }}" ng-disabled="!hrc.isAvailable(w)" ng-click="hrc.hire(w)"><i class="fa fa-user"></i> <small>{{ w.state.cost | currency }}</small></button>
                   </div>
                 </li>
               </ul>
@@ -178,7 +178,7 @@
                     <h4 class="media-heading"><i class="fa {{ u.icon }} media-object"></i> {{ u.name }}</h4>
                     <p>{{ u.description }}</p>
                     <p class="small">{{ u.effect }}</p>
-                    <button class="btn btn-primary" ng-disabled="!uc.isAvailable(u)" ng-click="uc.upgrade(u)"><i class="fa fa-money"></i> <small>{{ u.cost | currency }}</small></button>
+                    <button class="btn btn-primary afford-btn" data-res="money" data-cost="{{ u.cost }}" ng-disabled="!uc.isAvailable(u)" ng-click="uc.upgrade(u)"><i class="fa fa-money"></i> <small>{{ u.cost | currency }}</small></button>
                   </div>
                 </li>
               </ul>
@@ -189,8 +189,8 @@
 
       <div id="column-tabs" class="col-xs-6 visible-xs-block visible-sm-block col-no-padding">
         <ul id="TabList" class="nav nav-tabs" role="tablist">
-          <li class="active"><a href="#research" role="tab" data-toggle="tab"><i class="fa fa-cogs"></i> Research</a></li>
-          <li><a href="#hr" role="tab" data-toggle="tab"><i class="fa fa-users"></i> HR</a></li>
+          <li class="active"><a href="#research" role="tab" data-toggle="tab"><i class="fa fa-cogs"></i> Forschung</a></li>
+          <li><a href="#hr" role="tab" data-toggle="tab"><i class="fa fa-users"></i> Personal</a></li>
           <li><a href="#upgrades" role="tab" data-toggle="tab"><i class="fa fa-wrench"></i> Upgrades</a></li>
         </ul>
         <div id="TabContent" class="tab-content">
@@ -224,10 +224,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="achievements-label"><i class="fa fa-trophy"></i> Achievements</h4>
+            <h4 class="modal-title" id="achievements-label"><i class="fa fa-trophy"></i> Erfolge</h4>
           </div>
           <div class="modal-body">
-            <p class="text-center"><strong>Progress</strong> <span class="label label-info">{{ progress() }} / {{ achievements.length }}</span></p>
+            <p class="text-center"><strong>Fortschritt</strong> <span class="label label-info">{{ progress() }} / {{ achievements.length }}</span></p>
             <ul class="list-group">
               <li class="list-group-item" ng-repeat="a in achievements | orderBy:'state.timeAchieved' | reverse" ng-show="a.isAchieved()">
                 <i class="fa {{ a.icon }}"></i>
@@ -245,13 +245,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="stats-label"><i class="fa fa-bar-chart"></i> Statistics</h4>
+            <h4 class="modal-title" id="stats-label"><i class="fa fa-bar-chart"></i> Statistik</h4>
           </div>
           <div class="modal-body">
             <ul class="list-group">
-              <li class="list-group-item"><i class="fa fa-location-arrow"></i> : <strong>{{ lab.state.clicks | niceNumber }}</strong></li>
-              <li class="list-group-item"><i class="fa fa-database"></i> : <strong>{{ lab.state.dataSpent | niceNumber }}</strong> used / <strong>{{ lab.state.dataCollected | niceNumber }}</strong> collected</li>
-              <li class="list-group-item"><i class="fa fa-money"></i> : <strong>{{ lab.state.moneySpent | niceNumber }}</strong> spent / <strong>{{ lab.state.moneyCollected | niceNumber }}</strong> gathered</li>
+              <li class="list-group-item"><i class="fa fa-location-arrow"></i> Klicks: <strong>{{ lab.state.clicks | niceNumber }}</strong></li>
+              <li class="list-group-item"><i class="fa fa-database"></i> Daten: <strong>{{ lab.state.dataSpent | niceNumber }}</strong> verbraucht / <strong>{{ lab.state.dataCollected | niceNumber }}</strong> gesammelt</li>
+              <li class="list-group-item"><i class="fa fa-money"></i> Fördergelder: <strong>{{ lab.state.moneySpent | niceNumber }}</strong> ausgegeben / <strong>{{ lab.state.moneyCollected | niceNumber }}</strong> eingenommen</li>
             </ul>
           </div>
         </div>
@@ -263,7 +263,7 @@
 
     <div id="mobile-orientation-container">
       <div id="mobile-orientation-message">
-        You can only play Particle Clicker on your mobile device in landscape orientation.
+        Auf dem Handy kannst du Particle Clicker nur im Querformat spielen.
       </div>
     </div>
 
@@ -275,12 +275,12 @@
             <h4 class="modal-title" id="myModalLabel">Particle Clicker</h4>
           </div>
           <div class="modal-body">
-            <h4>About</h4>
+            <h4>Über das Spiel</h4>
             <p class="small">Version: 0.9</p>
-            <p class="small bg-warning">This is a pre-release. If you encounter any bugs please report them using <a href="https://github.com/particle-clicker/particle-clicker/issues"><i class="fa fa-github"></i> GitHub issues</a>. This game runs best in landscape mode. Performance of the event display may rely heavily on your hardware.</p>
-            <p>Particle Clicker is a game that was made during the <a href="https://webfest.web.cern.ch">CERN Webfest 2014</a>. The idea is borrowed from <a href="http://orteil.dashnet.org/cookieclicker/">Cookie Clicker</a>, an amazing and addictive cookie-themed game.</p>
-            <h5>Libraries</h5>
-            <p>This game is realised using a few libraries. Those are</p>
+            <p class="small bg-warning">Dies ist eine Vorabversion. Wenn du auf Fehler stößt, melde sie bitte über die <a href="https://github.com/particle-clicker/particle-clicker/issues"><i class="fa fa-github"></i> GitHub-Issues</a>. Das Spiel läuft am besten im Querformat. Die Performance der Event-Anzeige hängt stark von deiner Hardware ab.</p>
+            <p>Particle Clicker ist ein Spiel, das während des <a href="https://webfest.web.cern.ch">CERN Webfest 2014</a> entstanden ist. Die Idee stammt von <a href="http://orteil.dashnet.org/cookieclicker/">Cookie Clicker</a>, einem großartigen und süchtig machenden Keks-Spiel.</p>
+            <h5>Bibliotheken</h5>
+            <p>Dieses Spiel nutzt einige Bibliotheken, und zwar</p>
             <ul>
               <li><a href="http://angularjs.org">AngularJS</a></li>
               <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
@@ -289,7 +289,7 @@
               <li><a href="http://imulus.github.io/retinajs/">retina.js</a></li>
               <li><a href="https://github.com/ftlabs/fastclick">fastclick.js</a></li>
             </ul>
-            <h5>Authors</h5>
+            <h5>Autoren</h5>
             <ul>
               <li><a href="https://github.com/gbiro">Gabor Biro</a></li>
               <li><a href="https://github.com/ibab">Igor Babuschkin</a></li>
@@ -297,9 +297,9 @@
               <li><a href="https://github.com/ntadej">Tadej Novak</a></li>
               <li><a href="https://github.com/zhangjiannan">Jiannan Zhang</a></li>
             </ul>
-            <p>Feel free to get in touch with us via GitHub or by shooting us an email on<br><a href="mailto:particle-clicker@googlegroups.com">particle-clicker@googlegroups.com</a>.</p>
-            <h5>Source</h5>
-            <p>The source code of this game is freely available on <a href="https://github.com/particle-clicker/particle-clicker"><i class="fa fa-github"></i> GitHub</a> under the terms of an MIT license.</p>
+            <p>Melde dich gerne bei uns über GitHub oder per E-Mail an<br><a href="mailto:particle-clicker@googlegroups.com">particle-clicker@googlegroups.com</a>.</p>
+            <h5>Quellcode</h5>
+            <p>Der Quellcode dieses Spiels ist frei verfügbar auf <a href="https://github.com/particle-clicker/particle-clicker"><i class="fa fa-github"></i> GitHub</a> unter den Bedingungen einer MIT-Lizenz.</p>
           </div>
         </div>
       </div>
@@ -321,5 +321,6 @@
     <script src="js/ui.js"></script>
     <script src="js/game.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/juice.js"></script>
   </body>
 </html>

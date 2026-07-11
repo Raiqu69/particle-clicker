@@ -1,8 +1,8 @@
 [
   {
     "key": "research-cpv",
-    "name": "CP violation",
-    "description": "CP symmetry is broken!",
+    "name": "CP-Verletzung",
+    "description": "Die CP-Symmetrie ist gebrochen!",
     "cost_increase": 1.8,
     "image": "assets/icons/png/CPV.png",
     "info": "html/CPV.html",
@@ -15,7 +15,7 @@
   {
     "key": "research-jpsi",
     "name": "J/ψ",
-    "description": "The J/ψ meson consists of a c and an anti-c quark.",
+    "description": "Das J/ψ-Meson besteht aus einem c- und einem Anti-c-Quark.",
     "cost_increase": 1.7,
     "image": "assets/icons/png/Jpsi.png",
     "info": "html/Jpsi.html",
@@ -27,8 +27,8 @@
   },
   {
     "key": "research-tau",
-    "name": "τ lepton",
-    "description": "The third generation charged lepton.",
+    "name": "τ-Lepton",
+    "description": "Das geladene Lepton der dritten Generation.",
     "cost_increase": 1.6,
     "image": "assets/icons/png/tau.png",
     "info": "html/tau.html",
@@ -40,8 +40,8 @@
   },
   {
     "key": "research-beauty",
-    "name": "Beauty quark",
-    "description": "The third generation down-type quark.",
+    "name": "Beauty-Quark",
+    "description": "Das Down-artige Quark der dritten Generation.",
     "cost_increase": 1.5,
     "image": "assets/icons/png/b.png",
     "info": "html/b.html",
@@ -53,8 +53,8 @@
   },
     {
     "key": "research-gluons",
-    "name": "Gluons",
-    "description": "8 almost identical elementary particles that convey the strong force.",
+    "name": "Gluonen",
+    "description": "8 fast identische Elementarteilchen, die die starke Wechselwirkung vermitteln.",
     "cost_increase": 1.4,
     "image": "assets/icons/png/gluons.png",
     "info": "html/gluons.html",
@@ -66,8 +66,8 @@
   },
   {
     "key": "research-weak",
-    "name": "W and Z boson",
-    "description": "The carriers of the weak force.",
+    "name": "W- und Z-Boson",
+    "description": "Die Träger der schwachen Wechselwirkung.",
     "cost_increase": 1.35,
     "image": "assets/icons/png/weak.png",
     "info": "html/weak.html",
@@ -79,8 +79,8 @@
   },
   {
     "key": "research-top",
-    "name": "Top quark",
-    "description": "The heaviest of the quarks.",
+    "name": "Top-Quark",
+    "description": "Das schwerste aller Quarks.",
     "cost_increase": 1.3,
     "image": "assets/icons/png/t.png",
     "info": "html/top.html",
@@ -92,8 +92,8 @@
   },
   {
     "key": "research-boscillations",
-    "name": "B oscillation",
-    "description": "B mesons turn into their antiparticles and vice versa!",
+    "name": "B-Oszillation",
+    "description": "B-Mesonen verwandeln sich in ihre Antiteilchen und umgekehrt!",
     "cost_increase": 1.25,
     "image": "assets/icons/png/BBbar.png",
     "info": "html/BBbar.html",
@@ -105,8 +105,8 @@
   },
   {
     "key": "research-higgs",
-    "name": "Higgs boson",
-    "description": "It only took us 48 years to find this one!",
+    "name": "Higgs-Boson",
+    "description": "Nur 48 Jahre haben wir gebraucht, um es zu finden!",
     "cost_increase": 1.2,
     "image": "assets/icons/png/H.png",
     "info": "html/H.html",
@@ -119,7 +119,7 @@
   {
     "key": "research-dstars",
     "name": "D*s⁻",
-    "description": "The first ever observed heavy flavored spin-3 particle.",
+    "description": "Das erste je beobachtete Spin-3-Teilchen mit schwerem Flavour.",
     "cost_increase": 1.15,
     "image": "assets/icons/png/Dstar_s.png",
     "info": "html/Dstar_s.html",
@@ -131,8 +131,8 @@
   },
   {
     "key": "research-xib",
-    "name": "Ξb'- and Ξb*-",
-    "description": "Recently discovered strange beauty baryons. Both differ only in their spin configurations.",
+    "name": "Ξb'- und Ξb*-",
+    "description": "Kürzlich entdeckte Strange-Beauty-Baryonen. Beide unterscheiden sich nur in ihrer Spin-Konfiguration.",
     "cost_increase": 1.15,
     "image": "assets/icons/png/Xi_b.png",
     "info": "html/Xi_b.html",

@@ -54,7 +54,7 @@ var Helpers = (function () {
 
     var str = [];
     if (days > 0) {
-      str.push(days + ' day' + (days % 100 == 1 ? '' : 's'));
+      str.push(days + ' Tag' + (days % 100 == 1 ? '' : 'e'));
     }
     if (hours > 0) {
       str.push(hours + ' h');

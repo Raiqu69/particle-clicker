@@ -25,9 +25,18 @@
 
   app.filter('currency', ['$filter', function($filter) {
     return function(input) {
-      return 'JTN ' + $filter('niceNumber')(input);
+      return 'CHF ' + $filter('niceNumber')(input);
     };
   }]);
+
+  // Expose live game state to the (non-Angular) juice layer.
+  window.PC = {
+    lab: lab,
+    workers: workers,
+    research: research,
+    upgrades: upgrades,
+    allObjects: allObjects
+  };
 
   app.filter('reverse', ['$filter', function($filter) {
     return function(items) {
@@ -146,7 +155,7 @@
     };
     $scope.restart = function() {
       if (window.confirm(
-        'Do you really want to restart the game? All progress will be lost.'
+        'Willst du das Spiel wirklich neu starten? Der gesamte Fortschritt geht verloren.'
       )) {
         ObjectStorage.clear();
         window.location.reload(true);

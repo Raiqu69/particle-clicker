@@ -143,7 +143,7 @@ var UI = (function () {
   if (typeof $.cookie('cookielaw') === 'undefined') {
     var alert = '<div id="cookielaw" class="alert alert-info" role="alert">';
     alert += '<button type="button" class="btn btn-primary">OK</button>';
-    alert += '<i class="fa fa-info-circle alert-glyph"></i> <span class="alert-text">Particle Clicker uses local storage to store your current progress.</span>';
+    alert += '<i class="fa fa-info-circle alert-glyph"></i> <span class="alert-text">Particle Clicker speichert deinen Fortschritt lokal in deinem Browser.</span>';
     alert += '</div>';
     alert = $(alert);
     alert.find('button').click(function ()
@@ -157,8 +157,8 @@ var UI = (function () {
 
   if (typeof $.cookie('cern60') === 'undefined') {
     var alert = '<div id="cern60" class="alert alert-info" role="alert">';
-    alert += '<button type="button" class="btn btn-primary">Close</button>';
-    alert += '<i class="fa fa-area-chart alert-glyph"></i> <span class="alert-text"><a class="alert-link" href="http://home.web.cern.ch/about/updates/2014/12/take-part-cern-60-public-computing-challenge" target="_blank">Join the CERN 60 computing challenge!</a></span>';
+    alert += '<button type="button" class="btn btn-primary">Schließen</button>';
+    alert += '<i class="fa fa-area-chart alert-glyph"></i> <span class="alert-text"><a class="alert-link" href="http://home.web.cern.ch/about/updates/2014/12/take-part-cern-60-public-computing-challenge" target="_blank">Mach mit bei der CERN-60-Computing-Challenge!</a></span>';
     alert += '</div>';
     alert = $(alert);
     alert.find('button').click(function ()
