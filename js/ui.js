@@ -12,35 +12,16 @@ var UI = (function () {
     
     var resize = function() {
       var h = $(window).height();
-      var offset = 111;
-      if ($(window).width() < 992) {
-        offset = 112;
-      }
-      $('.scrollable').height(h - offset + 'px');
+      // tab panes sit below the fixed navbar and the segmented tab bar
+      $('.scrollable').height(h - 158 + 'px');
 
+      // The tab rail is the only shop UI now — content always lives in the
+      // tab panes (the old sidebar panels are permanently hidden shells).
       var types = ['research', 'hr', 'upgrades'];
-
-      if ($(window).width() < 992) {
-        for (var i = 0; i < types.length; i++) {
-          if ($('#' + types[i] + 'Content').parent().attr('id') == types[i] + 'Large') {
-            $('#' + types[i] + 'Content').detach().appendTo('#' + types[i]);
-          }
+      for (var i = 0; i < types.length; i++) {
+        if ($('#' + types[i] + 'Content').parent().attr('id') != types[i]) {
+          $('#' + types[i] + 'Content').detach().appendTo('#' + types[i]);
         }
-      } else {
-        for (var i = 0; i < types.length; i++) {
-          if ($('#' + types[i] + 'Content').parent().attr('id') != types[i] + 'Large') {
-            $('#' + types[i] + 'Content').detach().appendTo('#' + types[i] + 'Large');
-          }
-        }
-      }
-
-      if ($(window).width() < 600) {
-        var newWidth = Math.max($(window).width() - ($(window).height() - 90 + 10), 300);
-        $('#column-lab').width($(window).width() - newWidth);
-        $('#column-tabs').width(newWidth);
-      } else {
-        $('#column-lab').removeAttr('style');
-        $('#column-tabs').removeAttr('style');
       }
 
       if ($(window).width() >= 1200) {
