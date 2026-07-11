@@ -447,13 +447,6 @@ hr { border-color: var(--glass-b); }
 /* =====================================================================
    Juice — detector click feedback + count-up + affordability bars
    ===================================================================== */
-.det-bounce { animation: detBounce 0.22s var(--ease); }
-@keyframes detBounce {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(0.955); }
-  100% { transform: scale(1); }
-}
-
 .det-ripple {
   position: absolute;
   width: 14px; height: 14px;
@@ -509,7 +502,7 @@ hr { border-color: var(--glass-b); }
 #upgradesContent .afford-btn[disabled]::before  { background: linear-gradient(90deg, var(--up1),   var(--up2)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .det-bounce, .det-ripple, .click-float { animation: none !important; }
+  .det-ripple, .click-float { animation: none !important; }
 }
 
 /* =====================================================================

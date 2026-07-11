@@ -98,11 +98,6 @@
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
 
-    // squash-and-stretch bounce (restart animation via reflow)
-    holder.classList.remove('det-bounce');
-    void holder.offsetWidth;
-    holder.classList.add('det-bounce');
-
     var ripple = document.createElement('div');
     ripple.className = 'det-ripple';
     ripple.style.left = x + 'px';
