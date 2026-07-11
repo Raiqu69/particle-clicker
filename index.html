@@ -30,6 +30,11 @@
   </head>
   <body>
     <div class="bgwrap"></div>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="blob b4"></div>
+    <div class="grain"></div>
 
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -72,9 +77,9 @@
     </nav>
 
     <div id="main-content" class="main-grid">
-      <!-- On wide screens (>=992px) the three columns below are visible and
-           hold the shop content; below that, ui.js moves the content
-           (#researchContent, #hrContent, #upgradesContent) into the tab rail. -->
+      <!-- The three sidebar columns below are permanently hidden shells:
+           ui.js moves their contents (#researchContent, #hrContent,
+           #upgradesContent) into the tab rail on load. -->
       <div class="col-research">
         <div class="panel panel-default">
           <div class="panel-heading">

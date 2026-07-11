@@ -12,17 +12,15 @@ var UI = (function () {
     
     var resize = function() {
       var h = $(window).height();
-      // panels and tab panes sit below the fixed navbar
-      $('.scrollable').height(h - 150 + 'px');
+      // tab panes sit below the fixed navbar and the segmented tab bar
+      $('.scrollable').height(h - 158 + 'px');
 
-      // Wide screens show all three shop columns; narrow screens fall back
-      // to the tab rail. Move the content nodes to whichever host is active.
+      // The tab rail is the only shop UI now — content always lives in the
+      // tab panes (the old sidebar panels are permanently hidden shells).
       var types = ['research', 'hr', 'upgrades'];
-      var wide = $(window).width() >= 992;
       for (var i = 0; i < types.length; i++) {
-        var host = wide ? types[i] + 'Large' : types[i];
-        if ($('#' + types[i] + 'Content').parent().attr('id') != host) {
-          $('#' + types[i] + 'Content').detach().appendTo('#' + host);
+        if ($('#' + types[i] + 'Content').parent().attr('id') != types[i]) {
+          $('#' + types[i] + 'Content').detach().appendTo('#' + types[i]);
         }
       }
 
