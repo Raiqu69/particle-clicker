@@ -570,9 +570,41 @@ hr { border-color: var(--glass-b); }
 @media screen and (min-width: 1200px) {
   .status .stat-value { font-size: 30px; }
 }
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  .col-md-3s { width: 20%; }
-  .col-md-5s { width: 40%; }
+/* =====================================================================
+   Main layout — CSS Grid (replaces the old Bootstrap column skeleton)
+   ui.js keeps swapping panel contents into the tab column below 992px,
+   so the breakpoints here must match its 992px threshold.
+   ===================================================================== */
+#main-content.main-grid {
+  display: grid;
+  align-items: start;
+  /* narrow: lab + tab column side by side (landscape phones / small tablets) */
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 42vw, 400px);
+  grid-template-areas: "lab tabs";
+}
+.col-research { grid-area: research; display: none; min-width: 0; }
+.col-lab      { grid-area: lab;      min-width: 0; }
+.col-hr       { grid-area: hr;       display: none; min-width: 0; }
+.col-upgrades { grid-area: upgrades; display: none; min-width: 0; }
+.col-tabs     { grid-area: tabs;     min-width: 0; }
+
+/* ui.js still sets inline widths on these below 600px (legacy float layout);
+   the grid tracks own the sizing now, so neutralise them. */
+#column-lab.col-lab, #column-tabs.col-tabs { width: auto !important; }
+
+@media screen and (min-width: 992px) {
+  #main-content.main-grid {
+    grid-template-columns: minmax(230px, 20%) minmax(0, 1fr) minmax(230px, 20%) minmax(230px, 20%);
+    grid-template-areas: "research lab hr upgrades";
+  }
+  .col-research, .col-hr, .col-upgrades { display: block; }
+  .col-tabs { display: none; }
+}
+
+@media screen and (min-width: 1200px) {
+  #main-content.main-grid {
+    grid-template-columns: minmax(250px, 17%) minmax(0, 1fr) minmax(250px, 17%) minmax(250px, 17%);
+  }
 }
 @media screen and (max-width: 767px) {
   h4 { font-size: 16px; }

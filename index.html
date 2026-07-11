@@ -76,8 +76,8 @@
       </div>
     </nav>
 
-    <div id="main-content" class="container-fluid col-no-padding">
-      <div class="col-md-3 col-md-3s col-lg-2 col-no-padding visible-md-block visible-lg-block">
+    <div id="main-content" class="main-grid">
+      <div class="col-research">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -106,7 +106,7 @@
         </div>
       </div>
 
-      <div id="column-lab" class="col-xs-6 col-md-5 col-md-5s col-lg-6 col-no-padding-xs" ng-controller="LabController as lc">
+      <div id="column-lab" class="col-lab" ng-controller="LabController as lc">
         <input class="hidden-xs" id="labname" value="{{ lc.lab.state.name }}" ng-model="lc.lab.state.name" ng-cloak>
         <hr class="hidden-xs">
         <div id="detector-holder">
@@ -139,7 +139,7 @@
         </div>
       </div>
 
-      <div class="col-md-3 col-md-3s col-lg-2 col-no-padding visible-md-block visible-lg-block">
+      <div class="col-hr">
         <div class="panel panel-default panel-stick">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -163,8 +163,8 @@
         </div>
       </div>
 
-      <div class="col-md-3 col-md-3s col-lg-2 col-no-padding visible-md-block visible-lg-block">
-        <div class="panel panel-default hidden-xs hidden-sm">
+      <div class="col-upgrades">
+        <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
               <i class="fa fa-wrench"></i> Upgrades
@@ -188,7 +188,7 @@
         </div>
       </div>
 
-      <div id="column-tabs" class="col-xs-6 visible-xs-block visible-sm-block col-no-padding">
+      <div id="column-tabs" class="col-tabs">
         <ul id="TabList" class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#research" role="tab" data-toggle="tab"><i class="fa fa-cogs"></i> Forschung</a></li>
           <li><a href="#hr" role="tab" data-toggle="tab"><i class="fa fa-users"></i> Personal</a></li>
