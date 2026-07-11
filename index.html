@@ -34,6 +34,7 @@
     <div class="blob b2"></div>
     <div class="blob b3"></div>
     <div class="blob b4"></div>
+    <div class="grain"></div>
 
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -86,11 +87,11 @@
           <div class="panel-body scrollable large" id="researchLarge" ng-controller="ResearchController as rc">
             <div id="researchContent" ng-controller="ResearchController as rc">
               <ul class="media-list" ng-cloak>
-                <li class="media" ng-repeat="r in rc.research" ng-show="rc.isVisible(r)">
+                <li class="media" ng-class="{ locked: r.state.level === 0 }" ng-repeat="r in rc.research" ng-show="rc.isVisible(r)">
                   <img ng-show="r.state.level > 0" class="research-icon media-object" ng-src="{{ r.image }}" alt="">
                   <img ng-hide="r.state.level > 0" class="research-icon media-object" src="assets/icons/png/unknown.png" alt="">
                   <div class="media-body">
-                    <h4 class="media-heading">{{ r.state.level > 0 ? r.name : '?????' }} <span ng-show="r.state.level > 0" class="badge">Level {{ r.state.level }}</span></h4>
+                    <h4 class="media-heading"><i class="fa fa-lock" ng-show="r.state.level === 0"></i> {{ r.state.level > 0 ? r.name : '?????' }} <span ng-show="r.state.level > 0" class="badge">Level {{ r.state.level }}</span></h4>
                     <p ng-show="r.state.level > 0">{{ r.description }}</p>
                     <p ng-show="r.state.level > 0" class="small">Bringt <strong>{{ r.state.reputation | niceNumber }}</strong> Reputation.</p>
                     <div class="btn-group">

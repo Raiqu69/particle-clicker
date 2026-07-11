@@ -57,9 +57,26 @@
     }
   }
 
+  /* ---------------------------------------------------------------- *
+   *  Reactive glow: detector aura brightens with total data rate.    *
+   * ---------------------------------------------------------------- */
+  function tickGlow() {
+    if (!holder) { return; }
+    var rate = 0, ws = PC.workers;
+    for (var i = 0; i < ws.length; i++) {
+      rate += ws[i].state.hired * ws[i].state.rate;
+    }
+    // log-scale: rate 1 -> ~0, 1e4 -> ~0.5, 1e8 -> 1
+    var g = Math.max(0, Math.min(1, Math.log(rate + 1) / (Math.LN10 * 8)));
+    var blur = (22 + g * 60).toFixed(1);
+    var alpha = (0.12 + g * 0.45).toFixed(3);
+    holder.style.filter = 'drop-shadow(0 0 ' + blur + 'px rgba(79,212,255,' + alpha + '))';
+  }
+
   function update() {
     tickStats();
     tickAfford();
+    tickGlow();
   }
   function loop() {
     update();
