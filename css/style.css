@@ -595,9 +595,9 @@ hr { border-color: var(--glass-b); }
   .status .stat-value { font-size: 30px; }
 }
 /* =====================================================================
-   Main layout — hero lab + tabbed shop rail (CSS Grid, all widths)
-   ui.js parks the shop contents permanently in the tab panes; the old
-   sidebar columns are empty hidden shells.
+   Main layout — CSS Grid, original column order:
+   >=992px: research | lab (detector) | hr | upgrades
+   <992px:  lab + tab rail fallback (ui.js moves the content)
    ===================================================================== */
 #main-content.main-grid {
   display: grid;
@@ -608,6 +608,18 @@ hr { border-color: var(--glass-b); }
 .col-research, .col-hr, .col-upgrades { display: none; }
 .col-lab  { grid-area: lab;  min-width: 0; position: relative; }
 .col-tabs { grid-area: tabs; min-width: 0; padding: 10px 10px 10px 0; }
+
+@media screen and (min-width: 992px) {
+  #main-content.main-grid {
+    grid-template-columns: minmax(225px, 0.65fr) minmax(0, 1.3fr) minmax(225px, 0.65fr) minmax(225px, 0.65fr);
+    grid-template-areas: "research lab hr upgrades";
+    padding: 0 4px;
+  }
+  .col-research { display: block; grid-area: research; min-width: 0; }
+  .col-hr       { display: block; grid-area: hr;       min-width: 0; }
+  .col-upgrades { display: block; grid-area: upgrades; min-width: 0; }
+  .col-tabs     { display: none; }
+}
 @media screen and (max-width: 767px) {
   h4 { font-size: 16px; }
   .col-no-padding-xs { padding-right: 0; padding-left: 0; }
