@@ -1,297 +1,476 @@
+/* =====================================================================
+   Particle Clicker — "Cosmic Glass" reskin
+   Matches the SatisPython / KalorienTracker design system:
+   deep-violet void, animated aurora blobs, glassmorphism panels,
+   neon gradient-clipped numbers, uppercase micro-labels.
+   Overrides Bootstrap 3 + AngularJS markup. Game logic untouched.
+   ===================================================================== */
+
+:root {
+  --bg0:  #0d0620;
+  --bg1:  #140a2e;
+  --glass:   rgba(255, 255, 255, 0.055);
+  --glass-b: rgba(255, 255, 255, 0.12);
+  --panel:   rgba(20, 10, 46, 0.72);
+
+  --txt: #f4f1ff;
+  --lbl: #b9b2d6;
+  --dim: #7d759c;
+
+  /* accent pairs */
+  --data1: #4fd4ff; --data2: #0a84ff;   /* Research / Data  — cyan→blue  */
+  --rep1:  #c77dff; --rep2:  #7b5bff;   /* Reputation       — purple     */
+  --fund1: #ffe259; --fund2: #ffc400;   /* Funding          — gold       */
+  --hr1:   #4ffb9f; --hr2:   #22c96f;   /* HR               — green      */
+  --up1:   #ff9f0a; --up2:   #ff5f3d;   /* Upgrades         — orange     */
+
+  --acc1: #c77dff; --acc2: #7b5bff;
+
+  --font: -apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- kill the game's original "no radius everywhere" rule fallout ---- */
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg0);
+  color: var(--txt);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
 body {
-  padding-top: 40px;
+  padding-top: 62px;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-* {
-  border-radius: 0 !important;
+a, button { transition: all 0.18s var(--ease); }
+a { color: var(--data1); }
+a:hover, a:focus { color: #fff; text-decoration: none; }
+
+hr { border-color: var(--glass-b); }
+
+/* =====================================================================
+   Aurora background (DOM injected in index.html: .bgwrap + .blob*)
+   ===================================================================== */
+.bgwrap {
+  position: fixed; inset: 0; z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, #1e123f 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 55%);
+}
+.blob {
+  position: fixed; z-index: -1;
+  width: 46vw; height: 46vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.blob.b1 { background: #7b5bff; top: -8vw;  left: -6vw;  animation: float1 30s var(--ease) infinite; }
+.blob.b2 { background: #ff2d6f; top: 30vh;  right: -10vw; animation: float2 34s var(--ease) infinite; }
+.blob.b3 { background: #22c96f; bottom: -12vw; left: 20vw; animation: float3 28s var(--ease) infinite; }
+.blob.b4 { background: #4fd4ff; top: 4vh;   right: 24vw;  animation: float1 26s var(--ease) infinite reverse; opacity: 0.4; }
+
+@keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(6vw, 5vh) scale(1.12); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-5vw, 4vh) scale(1.08); } }
+@keyframes float3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4vw, -6vh) scale(1.1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none !important; }
+  a, button, .media-list .media, .btn { transition: none !important; }
 }
 
-a, button {
-  transition:all 0.2s;
-  -webkit-transition:all 0.2s; }
+/* =====================================================================
+   Navbar → floating glass top bar
+   ===================================================================== */
+.navbar-fixed-top { padding: 8px 6px; border: 0; }
+.navbar-default {
+  background: rgba(20, 10, 46, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-b);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(199,125,255,0.05);
+  margin: 0 8px;
+}
+.navbar-default .navbar-brand {
+  font-size: 19px; font-weight: 800; letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #fff, #c9b8ff);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.navbar-default .navbar-nav > li > a {
+  color: var(--lbl); font-weight: 600; font-size: 13.5px;
+  border-radius: 10px; margin: 6px 2px; padding: 8px 12px;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .open > a {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+}
+.navbar-default .navbar-nav > li > a i { color: var(--acc1); }
+.navbar-toggle { border-color: var(--glass-b); border-radius: 10px; }
+.navbar-toggle .icon-bar { background: var(--lbl); }
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus { background: rgba(255,255,255,0.08); }
+/* neutralise the old raster brand icon without clobbering the gradient text fill */
+.pc-icon, .pc-icon:hover { background-image: linear-gradient(90deg, #fff, #c9b8ff) !important; padding-left: 15px !important; }
+
+/* dropdown menus */
+.dropdown-menu {
+  background: rgba(20, 10, 46, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-b);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  padding: 6px;
+}
+.dropdown-menu > li > a { color: var(--lbl); border-radius: 8px; padding: 8px 12px; }
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+}
+.dropdown-menu .divider { background: var(--glass-b); }
+
+/* =====================================================================
+   Panels (Research / HR / Upgrades) → glass cards
+   ===================================================================== */
+.panel {
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-b);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  margin: 10px;
+  overflow: hidden;
+}
+.panel-default > .panel-heading {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+  border-bottom: 1px solid var(--glass-b);
+  padding: 14px 18px;
+}
+.panel-title {
+  color: var(--dim);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.6px; text-transform: uppercase;
+}
+.panel-title i { color: var(--acc1); margin-right: 4px; }
+.panel-body { color: var(--lbl); padding: 12px; }
+
+/* per-column accent on the heading icon */
+#researchLarge ~ * , /* noop guard */ :root { }
+.panel-heading .fa-cogs  { color: var(--data1); }
+.panel-heading .fa-users { color: var(--hr1); }
+.panel-heading .fa-wrench{ color: var(--up1); }
+
+.scrollable.large { max-height: calc(100vh - 140px); }
+
+/* =====================================================================
+   Media items (research / worker / upgrade rows) → glass sub-cards
+   ===================================================================== */
+.media-list .media {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.media-list .media:first-child { margin-top: 4px; }
+.media-list .media:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+.media-heading {
+  color: var(--txt); font-size: 14px; font-weight: 700;
+}
+.media-body p { color: var(--lbl); font-size: 12.5px; line-height: 1.5; margin: 6px 0; }
+.media-body p.small { color: var(--dim); }
+.media-body p strong { color: var(--txt); }
+.research-icon {
+  border-radius: 10px;
+  border: 1px solid var(--glass-b);
+  background: rgba(255,255,255,0.05);
+  padding: 3px;
+  width: 48px; height: 48px;
 }
 
-h1 br {
-  display: none;
+/* =====================================================================
+   Badges & labels → pills
+   ===================================================================== */
+.badge {
+  background: linear-gradient(135deg, rgba(199,125,255,0.28), rgba(123,91,255,0.18));
+  border: 1px solid rgba(199,125,255,0.35);
+  color: #e9dcff;
+  font-weight: 700; font-size: 10.5px;
+  letter-spacing: 0.3px;
+  border-radius: 999px; padding: 3px 9px;
 }
+.label { border-radius: 999px; padding: 4px 10px; font-weight: 700; }
+.label-info { background: linear-gradient(135deg, var(--data1), var(--data2)); color: #04121f; }
 
-.pc-icon {
-  background: url('../assets/pc32sw.png') no-repeat 10px center;
-  padding-left: 50px;
+/* =====================================================================
+   Buttons
+   ===================================================================== */
+.btn {
+  border: 1px solid var(--glass-b);
+  border-radius: 11px;
+  font-weight: 600; font-size: 12.5px;
+  padding: 8px 14px;
+  color: var(--lbl);
+  background: rgba(255,255,255,0.05);
 }
-
-.pc-icon:hover {
-  background-image: url('../assets/pc32.png');
+.btn:hover:not([disabled]), .btn:focus {
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
 }
+.btn[disabled], .btn.disabled { opacity: 0.32; }
 
+/* primary = purple action */
+.btn-primary {
+  background: linear-gradient(135deg, var(--acc1), var(--acc2));
+  border-color: transparent;
+  color: #fff; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(123,91,255,0.3);
+}
+.btn-primary:hover:not([disabled]), .btn-primary:focus:not([disabled]) {
+  color: #fff;
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 24px rgba(123,91,255,0.45);
+}
+.btn-info {
+  background: linear-gradient(135deg, var(--data1), var(--data2));
+  border-color: transparent; color: #04121f;
+  box-shadow: 0 4px 16px rgba(79,212,255,0.28);
+}
+.btn-info:hover:not([disabled]) {
+  color: #04121f; transform: translateY(-2px); filter: brightness(1.08);
+}
+.btn small { font-weight: 700; }
+.btn-group .btn { margin-right: 4px; }
+
+/* HR column buttons lean green, Upgrades lean orange */
+#hrContent .btn-primary { background: linear-gradient(135deg, var(--hr1), var(--hr2)); box-shadow: 0 4px 16px rgba(34,201,111,0.3); color: #03210f; }
+#upgradesContent .btn-primary { background: linear-gradient(135deg, var(--up1), var(--up2)); box-shadow: 0 4px 16px rgba(255,95,61,0.3); color: #2a0f04; }
+
+/* =====================================================================
+   Lab centre column — name + status stats
+   ===================================================================== */
+#labname {
+  background: var(--glass);
+  border: 1px solid var(--glass-b) !important;
+  border-radius: 12px;
+  color: var(--txt);
+  font-weight: 700;
+  padding: 10px 14px !important;
+  margin-top: 14px;
+  text-align: center;
+  width: calc(100% - 20px); margin-left: 10px;
+}
+#labname:focus { outline: none; border-color: var(--acc1) !important; box-shadow: 0 0 0 3px rgba(199,125,255,0.15); }
+
+#detector-holder { margin-top: 8px; }
 #detector {
-  cursor: pointer;
-  margin: 0 auto;
+  filter: drop-shadow(0 0 40px rgba(79,212,255,0.18));
+}
+#detector-info.btn-info {
+  border-radius: 50%;
+  width: 40px; height: 40px; padding: 0;
+}
+
+/* status row → 3 gradient stat tiles */
+.status {
+  margin: 16px 10px 0;
+  display: flex; gap: 10px;
+}
+.status > [class*="col-"] {
+  flex: 1; float: none; width: auto;
+  background: var(--glass);
+  border: 1px solid var(--glass-b);
+  border-radius: 16px;
+  padding: 14px 10px !important;
   position: relative;
 }
-
-#detector canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
+.status .stat-label {
+  display: block;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 6px;
 }
-
-#detector-core {
-   z-index: 0;
+.status .stat-value {
+  display: block;
+  font-size: 24px; font-weight: 800; letter-spacing: -0.5px;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+.status .stat-data   .stat-value { background-image: linear-gradient(135deg, var(--data1), var(--data2)); }
+.status .stat-rep    .stat-value { background-image: linear-gradient(135deg, var(--rep1),  var(--rep2));  }
+.status .stat-fund   .stat-value { background-image: linear-gradient(135deg, var(--fund1), var(--fund2)); }
+.status strong { color: var(--dim); }
 
-#detector-events {
-   z-index: 1;
-}
+.update-value { position: absolute; right: 10px; top: 10px; height: auto; }
+.update-plus  { color: var(--hr1);  position: static; float: none; font-weight: 700; font-size: 12px; }
+.update-minus { color: #ff6aa9;     position: static; float: none; font-weight: 700; font-size: 12px; }
 
-#detector-info {
-  z-index: 10;
-  position: absolute;
+/* =====================================================================
+   Mobile tabs
+   ===================================================================== */
+.nav-tabs { border-bottom: 1px solid var(--glass-b); padding: 0 6px; }
+.nav-tabs > li > a {
+  color: var(--lbl); border: 0; border-radius: 10px 10px 0 0;
+  font-weight: 600; margin-right: 4px;
 }
+.nav-tabs > li > a:hover { background: rgba(255,255,255,0.06); border: 0; }
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: #fff; border: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08));
+}
+.tab-content { border-left: 0; }
+#column-tabs .tab-pane.scrollable { max-height: calc(100vh - 120px); }
 
-.scrollable {
-  overflow: auto;
+/* =====================================================================
+   Modals → glass dark
+   ===================================================================== */
+.modal-backdrop.in { opacity: 0.7; background: #050211; }
+.modal-content {
+  background: rgba(20, 10, 46, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-b);
+  border-radius: 20px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.7), 0 0 40px rgba(123,91,255,0.18);
+  color: var(--txt);
 }
+.modal-header { border-bottom: 1px solid var(--glass-b); padding: 18px 22px; }
+.modal-title { color: var(--txt); font-weight: 800; letter-spacing: -0.3px; }
+.modal-title i { color: var(--acc1); }
+.modal-body { color: var(--lbl); padding: 20px 22px; }
+.modal-body h4, .modal-body h5 { color: var(--txt); }
+.modal-body .small { color: var(--dim); }
+.modal-body .bg-warning {
+  background: rgba(255,226,89,0.1); border: 1px solid rgba(255,226,89,0.3);
+  border-radius: 12px; padding: 10px 12px; color: #ffe259;
+}
+.close {
+  color: var(--lbl); opacity: 0.8; text-shadow: none; font-size: 26px;
+  transition: all 0.18s var(--ease);
+}
+.close:hover { color: #fff; opacity: 1; }
 
-.research-icon {
-  float: left;
-  margin-right: 10px;
+/* list groups inside modals */
+.list-group { border-radius: 12px; overflow: hidden; }
+.list-group-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-b);
+  color: var(--lbl);
+  padding: 12px 14px;
 }
+.list-group-item + .list-group-item { border-top: 0; }
+.list-group-item strong { color: var(--txt); }
+.list-group-item i { color: var(--acc1); }
 
-#achievements-container {
-  position: fixed; bottom: 0px; left: 0px;
+/* =====================================================================
+   Toasts (achievements / messages)
+   ===================================================================== */
+#achievements-container, #messages-container { z-index: 60; padding: 12px; }
+.alert {
+  background: rgba(28, 16, 52, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-b);
+  border-radius: 14px;
+  color: var(--txt);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  padding: 14px 16px;
 }
+.alert-success {
+  border-color: rgba(255,226,89,0.4);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,196,0,0.18);
+}
+.alert-success .alert-glyph { color: var(--fund1); }
+.alert-info .alert-glyph { color: var(--data1); }
+.alert-text { color: var(--txt); }
+.alert-link { color: var(--data1); }
+.alert .close { font-size: 20px; }
 
-#messages-container {
-  position: fixed; bottom: 0px; right: 0px;
+/* =====================================================================
+   Scrollbars
+   ===================================================================== */
+.scrollable::-webkit-scrollbar, body::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollable::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.14); border-radius: 4px;
 }
+.scrollable::-webkit-scrollbar-track { background: transparent; }
 
-#achievements-container .alert,
-#messages-container .alert {
-  margin-bottom: 10px; position: relative;
-}
-
-#achievements-container .alert-glyph,
-#messages-container .alert-glyph {
-  float:left; font-size: 20px; margin-right: 10px;
-}
-
-#achievements-container .alert-text,
-#messages-container .alert-text {
-  font-size: 14px;
-}
-
-#achievements-container .alert-text {
-  font-weight: bold;
-}
-
-#messages-container .btn {
-  float:right; font-weight: bold;
-}
+/* =====================================================================
+   Keep the game's functional bits
+   ===================================================================== */
+#detector { cursor: pointer; margin: 0 auto; position: relative; }
+#detector canvas { position: absolute; left: 0; top: 0; }
+#detector-core { z-index: 0; }
+#detector-events { z-index: 1; }
+#detector-info { z-index: 10; position: absolute; }
+.scrollable { overflow: auto; }
+.col-no-padding { padding-right: 0; padding-left: 0; }
+.media-list-no-margin { margin-top: -6px; }
 
 #mobile-orientation-container {
-  position: fixed; top: 0; bottom: 0; left: 0; right: 0;
-  background: #fff;
-  display: none;
-  padding-top: 50%;
-  z-index: 100;
+  position: fixed; inset: 0;
+  background: var(--bg0);
+  display: none; padding-top: 40vh; z-index: 100;
 }
-
-#mobile-orientation-message {
-  text-align: center;
-  margin: auto auto;
-  color: #777;
-  font-size: 18px;
-  padding: 15px;
-}
-
-.status strong {
-  color: #666;
-}
-
-.update-value {
-  position: absolute;
-  right: 1em;
-  top: 1.42857em;
-  height: 1.42857em;
-}
-
-.update-plus {
-  color: green;
-  float: left;
-  right: 5px;
-  position: absolute;
-}
-
-.update-minus {
-  color: red;
-  float: left;
-  right: 5px;
-  position: absolute;
-}
-
-#labname {
-  border: 0px;
-  padding: 0 4px;
-  margin-top: 20px;
-  font-weight: 500;
-  line-height: 1;
-  width: 99%;
-}
-
-.panel {
-  margin-bottom: 0;
-}
-
-.media-list-no-margin {
-  margin-top: -15px;
-}
-
-.col-no-padding {
-  padding-right: 0;
-  padding-left: 0;
-}
-
-.tab-content {
-  border-left:1px solid #ddd;
-}
-
-.tab-pane.scrollable {
-  padding:15px;
-}
-
+#mobile-orientation-message { text-align: center; color: var(--lbl); font-size: 18px; padding: 15px; }
 
 .prevent-select {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-touch-callout: none; -webkit-user-select: none;
+  -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
+[ng\:cloak], [ng-cloak], .ng-cloak { display: none !important; }
 
-[ng\:cloak], [ng-cloak], .ng-cloak {
-  display: none !important;
+/* attention blink (kept, but softened to the palette) */
+.blink { animation: blinker 1s cubic-bezier(.5,0,1,1) infinite alternate; }
+@keyframes blinker { from { opacity: 1; } to { opacity: 0.35; } }
+
+/* =====================================================================
+   Responsive
+   ===================================================================== */
+@media screen and (orientation: portrait) and (max-width: 767px) {
+  #mobile-orientation-container { display: block; }
 }
-
-
-/** Annoying blink effect to get user's attention. */
-.blink {
-  animation: blinker 1.0s cubic-bezier(.5, 0, 1, 1) infinite alternate;
-  -webkit-animation: blinker 1.0s cubic-bezier(.5, 0, 1, 1) infinite alternate;
-}
-
-@keyframes blinker {
-  from { opacity: 1; }
-  to { opacity: 0.25; }
-}
-
-@-webkit-keyframes blinker {
-  from { opacity: 1; }
-  to {
-    opacity: 0.25;
-    background: #f00;
-    border-color: #900;
-  }
-}
-
-/** Responsive **/
-@media screen and (orientation:portrait) and (max-width: 767px) {
-  #mobile-orientation-container {
-    display: block;
-  }
-}
-
-@media screen and (orientation:landscape) and (max-width: 767px) {
-  
-}
-
 @media screen and (min-width: 768px) {
-  #detector-holder {
-    margin-left: -15px;
-    margin-right: -15px;
-  }
-
-  .status {
-    font-size: 18px;
-  }
-
-  #labname {
-    font-size: 22px;
-  }
-
-  #detector-info {
-    top: 85px; right: 15px;
-  }
+  #detector-holder { margin-left: -8px; margin-right: -8px; }
+  .status .stat-value { font-size: 26px; }
+  #labname { font-size: 20px; }
+  #detector-info { top: 92px; right: 18px; }
 }
-
 @media screen and (min-width: 992px) {
-  .panel-stick,
-  .panel-stick .panel-heading,
-  .panel-stick .panel-body {
-    border-right: 0;
-  }
-
-  .status {
-    font-size: 20px;
-  }
-
-  #labname {
-    font-size: 24px;
-  }
+  .panel-stick { border-right: 0; }
+  .status .stat-value { font-size: 28px; }
+  #labname { font-size: 22px; }
 }
-
 @media screen and (min-width: 1200px) {
-  .status {
-    font-size: 24px;
-  }
+  .status .stat-value { font-size: 30px; }
 }
-
-@media screen and (min-width: 992px) and (max-width: 1199px){
-  .col-md-3s {
-    width:20%;
-  }
-
-  .col-md-5s {
-    width:40%;
-  }
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .col-md-3s { width: 20%; }
+  .col-md-5s { width: 40%; }
 }
-
 @media screen and (max-width: 767px) {
-  h4 {
-    font-size: 16px;
-  }
-
-  .col-no-padding-xs {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .col-no-padding-xs .row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .status .col-xs-4 {
-    min-width: 75px;
-  }
-
-  #detector-info {
-    top: 15px; right: 15px;
-  }
-}
-
-/* Retina support */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-    only screen and (min-resolution: 1.5dppx),
-    only screen and (min-resolution: 144dpi)
-{
-  .pc-icon {
-    background-image: url('../assets/pc32sw@2x.png');
-    background-size: 32px 32px;
-  }
-
-  .pc-icon:hover {
-    background-image: url('../assets/pc32@2x.png');
-  }
+  h4 { font-size: 16px; }
+  .col-no-padding-xs { padding-right: 0; padding-left: 0; }
+  .col-no-padding-xs .row { margin-left: 0; margin-right: 0; }
+  #detector-info { top: 15px; right: 15px; }
+  .status { flex-wrap: wrap; }
 }
