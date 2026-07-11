@@ -538,11 +538,7 @@ hr { border-color: var(--glass-b); }
    ===================================================================== */
 
 /* combo meter under the detector: hidden while idle, glass track + scaleX bar */
-/* Combo meter is hidden: the multiplier still drives click gain, but the
-   bar's fill/decay motion under the detector was distracting. The mechanic
-   and all click FX (ripples, floats, glow) are untouched. */
-#combo-meter { display: none !important; }
-#combo-meter.was-visible {
+#combo-meter {
   display: flex; align-items: center; gap: 10px;
   max-width: 260px; margin: 10px auto 0;
   opacity: 0; transition: opacity 0.3s var(--ease);
