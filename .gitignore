@@ -7,3 +7,6 @@ dist/
 
 # local dev config
 .claude/
+
+# local save backups
+save-backup-*.json

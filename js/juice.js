@@ -57,7 +57,7 @@
     _heat: 0,
     _lastClick: 0,
     heat: function () { return this._heat; },
-    mult: function () { return 1 + this._heat; },
+    mult: function () { return 1 + this._heat * 9; },   // 1.0x .. 10.0x
     overdrive: function () { return this._heat >= 0.95; },
     bump: function () {
       this._heat = Math.min(1, this._heat + COMBO_STEP);
@@ -68,7 +68,7 @@
      *  fires on mousedown, before the controller calls bump(). */
     previewGain: function () {
       var h = Math.min(1, this._heat + COMBO_STEP);
-      return Math.round(PC.lab.state.detector * (1 + h));
+      return Math.round(PC.lab.state.detector * (1 + h * 9));
     },
     decay: function (dt) {
       if (this._heat <= 0) { return; }
