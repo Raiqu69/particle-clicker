@@ -73,6 +73,22 @@ function createServer() {
 
 let win;
 
+// Single-instance lock: a second launch must NOT spin up its own Chromium.
+// Two instances would race for the Local Storage leveldb LOCK; the loser opens
+// an EMPTY localStorage (fresh game) and its 10s autosave can overwrite the
+// real save. Instead, focus the window that already owns the store.
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (win) {
+      if (win.isMinimized()) { win.restore(); }
+      win.focus();
+    }
+  });
+}
+
 function createWindow() {
   win = new BrowserWindow({
     width: 1280,
@@ -103,6 +119,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (!gotLock) { return; }   // second instance is quitting — never bind the port
   Menu.setApplicationMenu(null);
   const server = createServer();
   server.on('error', (e) => {

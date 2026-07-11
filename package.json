@@ -1,7 +1,7 @@
 {
   "name": "particle-clicker",
   "productName": "Particle Clicker",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "CERN Particle Clicker — offline desktop build",
   "main": "main.js",
   "author": "Raiqu",
